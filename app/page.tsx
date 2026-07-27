@@ -13,15 +13,19 @@ const habits = [
 const days = Array.from({ length: 31 }, (_, index) => index + 1);
 const weekday = ["СБ", "ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ"];
 const key = "habit-tracker-august-2026";
+const booksKey = "habit-tracker-books";
 
 export default function Home() {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [burst, setBurst] = useState("");
+  const [books, setBooks] = useState<string[]>([""]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     try {
       setChecked(JSON.parse(localStorage.getItem(key) || "{}"));
+      const savedBooks = JSON.parse(localStorage.getItem(booksKey) || "null");
+      if (Array.isArray(savedBooks) && savedBooks.length) setBooks(savedBooks);
     } catch {}
     setLoaded(true);
   }, []);
@@ -29,6 +33,10 @@ export default function Home() {
   useEffect(() => {
     if (loaded) localStorage.setItem(key, JSON.stringify(checked));
   }, [checked, loaded]);
+
+  useEffect(() => {
+    if (loaded) localStorage.setItem(booksKey, JSON.stringify(books));
+  }, [books, loaded]);
 
   const total = Object.values(checked).filter(Boolean).length;
   const possible = days.length * habits.length;
@@ -124,6 +132,45 @@ export default function Home() {
           </table>
         </div>
         <p className="footnote">Контрольные точки: 10, 20 и 30 августа · Продолжай в своём темпе</p>
+
+        <section className="books">
+          <div className="sectionHead bookHead">
+            <div><span className="sectionNum">02</span><h2>Мои книги</h2></div>
+            <button className="addBook" onClick={() => setBooks((current) => [...current, ""])}>
+              <span>＋</span> Добавить книгу
+            </button>
+          </div>
+          <div className="bookGrid">
+            {books.map((book, index) => (
+              <article className="bookCard" key={index}>
+                <div className="bookNumber">{String(index + 1).padStart(2, "0")}</div>
+                <div className="bookMark">◒</div>
+                <label htmlFor={`book-${index}`}>Название книги</label>
+                <input
+                  id={`book-${index}`}
+                  value={book}
+                  onChange={(event) =>
+                    setBooks((current) =>
+                      current.map((title, bookIndex) => bookIndex === index ? event.target.value : title),
+                    )
+                  }
+                  placeholder="Например, «Маленький принц»"
+                  maxLength={120}
+                />
+                <span className="savedHint">{book.trim() ? "Сохранено автоматически" : "Впиши свою книгу"}</span>
+                {books.length > 1 && (
+                  <button
+                    className="removeBook"
+                    onClick={() => setBooks((current) => current.filter((_, bookIndex) => bookIndex !== index))}
+                    aria-label={`Удалить книгу ${index + 1}`}
+                  >
+                    Удалить
+                  </button>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
       </section>
     </main>
   );
