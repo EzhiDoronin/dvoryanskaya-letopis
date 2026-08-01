@@ -36,21 +36,34 @@ const answers: { keys: string[]; answer: string }[] = [
 ];
 
 const gallery = [
-  { src: "/history/lopukhina.jpg", title: "Портрет Марии Лопухиной", note: "В. Л. Боровиковский, 1797" },
-  { src: "/history/ball.jpg", title: "Бал в Николаевском зале", note: "К. О. Брож, 1896" },
-  { src: "/history/lopukhina.jpg", title: "Дворянский портрет", note: "Государственная Третьяковская галерея" },
-  { src: "/history/ball.jpg", title: "Придворный бал", note: "Зимний дворец, 1896" },
+  { src: "/history/lopukhina.jpg", title: "Портрет Марии Лопухиной", note: "В. Л. Боровиковский, 1797", text: "Знаменитый образ дворянки конца XVIII века. Художник соединил парадный портрет с мягким пейзажем и показал героиню не только как представительницу рода, но и как живого, задумчивого человека.", position: "center" },
+  { src: "/history/ball.jpg", title: "Бал в Николаевском зале", note: "К. О. Брож, 1896", text: "Придворный бал был тщательно организованным церемониалом. Порядок танцев, форма одежды, представление гостей и даже разговоры подчинялись правилам этикета.", position: "center" },
+  { src: "/history/tolstoy.jpg", title: "Лев Толстой в кабинете", note: "И. Е. Репин, 1891", text: "Толстой происходил из старинного графского рода, но критически относился к привилегиям своего сословия. Кабинет и рабочая поза подчёркивают образ писателя, а не светского аристократа.", position: "center" },
+  { src: "/history/winter-palace.jpg", title: "Зимний дворец", note: "Санкт-Петербург", text: "Главная императорская резиденция была центром придворной жизни. Здесь проходили аудиенции, торжественные обеды, церемонии и большие балы для высшего света.", position: "center" },
+  { src: "/history/lopukhina.jpg", title: "Мода дворянки XVIII века", note: "Деталь портрета", text: "Одежда сообщала о положении человека не меньше фамилии. Тонкие ткани, высокая талия, жемчуг и естественная причёска отражают моду рубежа XVIII–XIX веков.", position: "center 18%" },
+  { src: "/history/ball.jpg", title: "Придворный церемониал", note: "Зимний дворец, 1896", text: "Бал служил местом знакомств, переговоров и демонстрации положения при дворе. За внешней лёгкостью танца стояли годы обучения и строгая социальная иерархия.", position: "70% center" },
+  { src: "/history/tolstoy.jpg", title: "Дворянин и литература", note: "Русская усадебная культура", text: "Дворянская среда дала России многих писателей, издателей и читателей. Домашние библиотеки и литературные салоны были важной частью культурной жизни XIX века.", position: "30% center" },
+  { src: "/history/winter-palace.jpg", title: "Императорская столица", note: "Архитектура XVIII века", text: "Петербургские дворцы задавали образец вкуса для знати. Их архитектура, интерьеры и коллекции влияли на устройство городских домов и загородных усадеб.", position: "center 35%" },
 ];
 
 export default function Home() {
   const [fact, setFact] = useState(dailyFacts[0]);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   useEffect(() => {
     const day = Math.floor(Date.now() / 86400000);
     setFact(dailyFacts[day % dailyFacts.length]);
   }, []);
+
+  useEffect(() => {
+    if (selectedImage === null) return;
+    const close = (event: KeyboardEvent) => { if (event.key === "Escape") setSelectedImage(null); };
+    document.addEventListener("keydown", close);
+    document.body.classList.add("modalOpen");
+    return () => { document.removeEventListener("keydown", close); document.body.classList.remove("modalOpen"); };
+  }, [selectedImage]);
 
   function ask(event: FormEvent) {
     event.preventDefault();
@@ -76,7 +89,9 @@ export default function Home() {
 
       <section id="life" className="section dark"><div className="sectionTitle light"><span>Глава вторая</span><h2>Мир дворянской усадьбы</h2><p>Повседневность была сложнее парадного портрета</p></div><div className="lifeGrid"><article><b>01</b><h3>Воспитание</h3><p>Домашние наставники, французский и немецкий языки, музыка, танцы и история готовили ребёнка к свету и службе.</p></article><article><b>02</b><h3>Служба</h3><p>Армия, гвардия, дипломатия и гражданские ведомства оставались важнейшими путями карьеры и общественного признания.</p></article><article><b>03</b><h3>Усадьба</h3><p>Дом, парк, библиотека и хозяйство создавали особый уклад — красивый, но основанный на труде множества зависимых людей.</p></article><article><b>04</b><h3>Свет</h3><p>Балы, салоны, театры и визиты подчинялись этикету. Репутация семьи могла значить не меньше состояния.</p></article><article><b>05</b><h3>Деньги</h3><p>Не каждый дворянин был богат. Долги, заклады имений и служебное жалованье были привычной частью жизни многих семей.</p></article><article><b>06</b><h3>Род и память</h3><p>Родословные книги, портретные галереи, гербы и семейные архивы соединяли личную историю с историей государства.</p></article></div></section>
 
-      <section id="gallery" className="section gallery"><div className="sectionTitle"><span>Картинная галерея</span><h2>Лица и интерьеры эпохи</h2><p>Произведения из открытых собраний Wikimedia Commons</p></div><div className="galleryGrid">{gallery.map((item, index) => <figure key={item.title} className={index === 0 ? "tall" : ""}><img src={item.src} alt={item.title}/><figcaption><b>{item.title}</b><span>{item.note}</span></figcaption></figure>)}</div></section>
+      <section id="gallery" className="section gallery"><div className="sectionTitle"><span>Картинная галерея</span><h2>Лица и интерьеры эпохи</h2><p>Нажмите на изображение, чтобы узнать его историю</p></div><div className="galleryGrid">{gallery.map((item, index) => <button type="button" key={item.title} className={`galleryCard ${index === 0 ? "tall" : ""}`} onClick={()=>setSelectedImage(index)} aria-label={`Открыть: ${item.title}`}><img src={item.src} alt="" style={{objectPosition:item.position}}/><span className="galleryCaption"><b>{item.title}</b><small>{item.note}</small><i>Узнать больше →</i></span></button>)}</div></section>
+
+      {selectedImage !== null && <div className="imageModal" role="dialog" aria-modal="true" aria-labelledby="image-title" onClick={()=>setSelectedImage(null)}><div className="modalCard" onClick={(event)=>event.stopPropagation()}><button className="modalClose" type="button" onClick={()=>setSelectedImage(null)} aria-label="Закрыть">×</button><div className="modalPicture"><img src={gallery[selectedImage].src} alt={gallery[selectedImage].title} style={{objectPosition:gallery[selectedImage].position}}/></div><div className="modalText"><span>Экспонат {String(selectedImage+1).padStart(2,"0")}</span><h2 id="image-title">{gallery[selectedImage].title}</h2><b>{gallery[selectedImage].note}</b><p>{gallery[selectedImage].text}</p><small>Изображение: Wikimedia Commons, общественное достояние</small></div></div></div>}
 
       <section id="ask" className="ask"><div><span className="quill">?</span><p className="overline">Кабинет историка</p><h2>Спросите о дворянстве</h2><p>Напишите вопрос своими словами или выберите готовую тему. Ответ появится сразу под строкой.</p></div><form onSubmit={ask}><label htmlFor="question">Ваш вопрос</label><div className="inputRow"><input id="question" value={question} onChange={(e)=>setQuestion(e.target.value)} placeholder="Например: как становились дворянами?" autoComplete="off"/><button type="submit" disabled={!question.trim()}>Получить ответ</button></div><div className="suggestions" aria-label="Примеры вопросов">{["Как становились дворянами?","Все ли дворяне были богаты?","Что было после 1917 года?"].map((item)=><button type="button" key={item} onClick={()=>{setQuestion(item);setAnswer(answers.find((entry)=>entry.keys.some((key)=>item.toLowerCase().includes(key)))?.answer ?? "Дворянство было сложным и неоднородным сословием.")}}>{item}</button>)}</div>{answer && <div className="answer" aria-live="polite"><b>Ответ летописца</b><p>{answer}</p></div>}</form></section>
 
