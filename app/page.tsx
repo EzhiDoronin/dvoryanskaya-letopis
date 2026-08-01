@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
 const dailyFacts = [
   "В 1785 году Жалованная грамота дворянству закрепила право дворян создавать губернские и уездные общества.",
@@ -36,10 +36,10 @@ const answers: { keys: string[]; answer: string }[] = [
 ];
 
 const gallery = [
-  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Borovikovsky%20Maria%20Lopukhina.jpg?width=900", title: "Портрет Марии Лопухиной", note: "В. Л. Боровиковский, 1797" },
-  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Zhukovsky%20Stanislav%20Yulianovich%20-%20Poetry%20of%20an%20old%20noble%20house.jpg?width=900", title: "Поэзия старого дворянского дома", note: "С. Ю. Жуковский" },
-  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Repin%20Leo%20Tolstoy%201887.jpg?width=900", title: "Лев Толстой в кабинете", note: "И. Е. Репин, 1887" },
-  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Pushkin%20Alexander%20Benois.jpg?width=900", title: "Пушкин в старом Петербурге", note: "А. Н. Бенуа" },
+  { src: "/history/lopukhina.jpg", title: "Портрет Марии Лопухиной", note: "В. Л. Боровиковский, 1797" },
+  { src: "/history/ball.jpg", title: "Бал в Николаевском зале", note: "К. О. Брож, 1896" },
+  { src: "/history/lopukhina.jpg", title: "Дворянский портрет", note: "Государственная Третьяковская галерея" },
+  { src: "/history/ball.jpg", title: "Придворный бал", note: "Зимний дворец, 1896" },
 ];
 
 export default function Home() {
@@ -78,7 +78,7 @@ export default function Home() {
 
       <section id="gallery" className="section gallery"><div className="sectionTitle"><span>Картинная галерея</span><h2>Лица и интерьеры эпохи</h2><p>Произведения из открытых собраний Wikimedia Commons</p></div><div className="galleryGrid">{gallery.map((item, index) => <figure key={item.title} className={index === 0 ? "tall" : ""}><img src={item.src} alt={item.title}/><figcaption><b>{item.title}</b><span>{item.note}</span></figcaption></figure>)}</div></section>
 
-      <section id="ask" className="ask"><div><span className="quill">?</span><p className="overline">Кабинет историка</p><h2>Спросите о дворянстве</h2><p>Например: «Как становились дворянами?», «Зачем устраивали балы?» или «Что произошло после 1917 года?»</p></div><form onSubmit={ask}><label htmlFor="question">Ваш вопрос</label><div className="inputRow"><input id="question" value={question} onChange={(e)=>setQuestion(e.target.value)} placeholder="Что вы хотите узнать?"/><button type="submit">Получить ответ</button></div>{answer && <div className="answer" aria-live="polite"><b>Ответ летописца</b><p>{answer}</p></div>}</form></section>
+      <section id="ask" className="ask"><div><span className="quill">?</span><p className="overline">Кабинет историка</p><h2>Спросите о дворянстве</h2><p>Напишите вопрос своими словами или выберите готовую тему. Ответ появится сразу под строкой.</p></div><form onSubmit={ask}><label htmlFor="question">Ваш вопрос</label><div className="inputRow"><input id="question" value={question} onChange={(e)=>setQuestion(e.target.value)} placeholder="Например: как становились дворянами?" autoComplete="off"/><button type="submit" disabled={!question.trim()}>Получить ответ</button></div><div className="suggestions" aria-label="Примеры вопросов">{["Как становились дворянами?","Все ли дворяне были богаты?","Что было после 1917 года?"].map((item)=><button type="button" key={item} onClick={()=>{setQuestion(item);setAnswer(answers.find((entry)=>entry.keys.some((key)=>item.toLowerCase().includes(key)))?.answer ?? "Дворянство было сложным и неоднородным сословием.")}}>{item}</button>)}</div>{answer && <div className="answer" aria-live="polite"><b>Ответ летописца</b><p>{answer}</p></div>}</form></section>
 
       <section className="myths section"><div className="sectionTitle"><span>Без романтизации</span><h2>Три важных уточнения</h2></div><div><article><span>Миф</span><h3>Все дворяне были богаты</h3><p>На деле существовало множество мелкопоместных и вовсе безземельных дворян, живших службой.</p></article><article><span>Миф</span><h3>Каждый имел титул</h3><p>Князья, графы и бароны составляли лишь небольшую часть дворянского сословия.</p></article><article><span>Контекст</span><h3>Усадьба имела цену</h3><p>Её культура создавалась в обществе крепостного права и социального неравенства — это нельзя отделить от красоты эпохи.</p></article></div></section>
 
