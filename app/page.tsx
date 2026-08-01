@@ -1,177 +1,88 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
-const habits = [
-  { name: "Убраться в комнате", icon: "✦", color: "#ff8a65" },
-  { name: "Читать 1 час", icon: "◒", color: "#7c6cf2" },
-  { name: "Заниматься jconf", icon: "⌁", color: "#2db6a3" },
-  { name: "Сделать домашку", icon: "✎", color: "#f3ae3d" },
-  { name: "100 отжиманий", icon: "⚡", color: "#ed5f76" },
+const dailyFacts = [
+  "В 1785 году Жалованная грамота дворянству закрепила право дворян создавать губернские и уездные общества.",
+  "Дворянский титул и дворянское достоинство — не одно и то же: большинство российских дворян не имело титула князя, графа или барона.",
+  "Табель о рангах 1722 года позволяла получить личное или потомственное дворянство благодаря государственной службе.",
+  "До Манифеста о вольности дворянства 1762 года служба государству долгое время была для дворянина обязанностью.",
+  "Гербы дворянских родов собирались в Общем гербовнике дворянских родов Всероссийской империи.",
+  "Дворянские собрания выбирали предводителей дворянства — важных участников местного управления.",
+  "Усадьба была не только домом: она объединяла парк, хозяйственные постройки, библиотеку, театр и нередко школу.",
+  "В конце XIX века среди потомственных дворян Российской империи были русские, поляки, грузины, немцы и представители многих других народов.",
+  "Французский язык был важной частью дворянского воспитания XVIII–XIX веков, но домашнее образование включало также историю, музыку и танцы.",
+  "На балу порядок танцев записывали в карне — маленькую записную книжку, которую дама носила с собой.",
 ];
 
-const days = Array.from({ length: 31 }, (_, index) => index + 1);
-const weekday = ["СБ", "ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ"];
-const key = "habit-tracker-august-2026";
-const booksKey = "habit-tracker-books";
+const topics = [
+  { year: "1722", title: "Табель о рангах", text: "Пётр I связал служебное продвижение с системой из 14 классов. Достижение определённых чинов могло дать личное или потомственное дворянство." },
+  { year: "1762", title: "Вольность дворянства", text: "Манифест Петра III освободил дворян от обязательной государственной службы, сохранив престиж добровольной военной и гражданской карьеры." },
+  { year: "1785", title: "Жалованная грамота", text: "Екатерина II оформила сословные права, личную неприкосновенность, самоуправление и дворянские родословные книги." },
+  { year: "1861", title: "После реформы", text: "Отмена крепостного права изменила экономику усадеб. Одни владельцы перестроили хозяйство, другие продавали землю или уходили на службу." },
+];
+
+const answers: { keys: string[]; answer: string }[] = [
+  { keys: ["кто такие", "что такое дворян"], answer: "Дворянство — привилегированное светское сословие землевладельцев и служилых людей. В России оно складывалось вокруг службы государю, а затем получило наследственные права и сословное самоуправление." },
+  { keys: ["стать дворян", "получить дворян"], answer: "Дворянство получали по рождению, за государственную службу и чин, а также по особому пожалованию монарха. Условия менялись: Табель о рангах сначала расширила путь через службу, а в XIX веке требования постепенно повышали." },
+  { keys: ["титул", "княз", "граф", "барон"], answer: "Титулованных дворян было меньшинство. Князь, граф и барон — титулы, но обычный потомственный дворянин мог не иметь никакого титула и всё равно обладать дворянским достоинством." },
+  { keys: ["бал", "танц"], answer: "Бал был одновременно развлечением и строгим общественным ритуалом. Молодёжь училась танцам и этикету, знакомства регулировались правилами, а последовательность танцев заранее заносили в бальные книжечки." },
+  { keys: ["женщ", "дворянк", "дамы"], answer: "Положение дворянки зависело от эпохи и семьи. Она могла наследовать имущество, управляла домом и усадьбой, получала домашнее или институтское образование; при этом её публичная и служебная самостоятельность была ограничена нормами времени." },
+  { keys: ["усадьб", "поместь", "жили"], answer: "Дворянская усадьба включала господский дом, парк, службы и хозяйство. Но не всякий дворянин был богат: многие владели небольшими имениями, служили за жалованье или жили весьма скромно." },
+  { keys: ["крепост", "крестьян"], answer: "История дворянского землевладения тесно связана с крепостным правом. Помещичья власть над крестьянами была важной основой хозяйства, но её формы различались; реформа 1861 года юридически освободила крепостных и изменила весь уклад усадеб." },
+  { keys: ["образован", "учил", "язык"], answer: "Детей учили дома с гувернёрами или в гимназиях, кадетских корпусах и институтах. В программу входили языки, словесность, история, музыка, танцы, верховая езда; набор предметов сильно зависел от достатка семьи." },
+  { keys: ["герб", "родослов"], answer: "Герб подтверждал символическую историю рода, но не заменял документы о дворянстве. Род вносили в губернскую родословную книгу, а утверждённые гербы публиковали в Общем гербовнике." },
+  { keys: ["исчез", "1917", "революц"], answer: "После революции 1917 года сословия и дворянские привилегии были упразднены. Многие семьи эмигрировали, подверглись репрессиям или приспосабливались к новой жизни; усадебная культура сохранилась в музеях, архивах и литературе." },
+];
+
+const gallery = [
+  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Borovikovsky%20Maria%20Lopukhina.jpg?width=900", title: "Портрет Марии Лопухиной", note: "В. Л. Боровиковский, 1797" },
+  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Zhukovsky%20Stanislav%20Yulianovich%20-%20Poetry%20of%20an%20old%20noble%20house.jpg?width=900", title: "Поэзия старого дворянского дома", note: "С. Ю. Жуковский" },
+  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Repin%20Leo%20Tolstoy%201887.jpg?width=900", title: "Лев Толстой в кабинете", note: "И. Е. Репин, 1887" },
+  { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Pushkin%20Alexander%20Benois.jpg?width=900", title: "Пушкин в старом Петербурге", note: "А. Н. Бенуа" },
+];
 
 export default function Home() {
-  const [checked, setChecked] = useState<Record<string, boolean>>({});
-  const [burst, setBurst] = useState("");
-  const [books, setBooks] = useState<string[]>([""]);
-  const [loaded, setLoaded] = useState(false);
+  const [fact, setFact] = useState(dailyFacts[0]);
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
 
   useEffect(() => {
-    try {
-      setChecked(JSON.parse(localStorage.getItem(key) || "{}"));
-      const savedBooks = JSON.parse(localStorage.getItem(booksKey) || "null");
-      if (Array.isArray(savedBooks) && savedBooks.length) setBooks(savedBooks);
-    } catch {}
-    setLoaded(true);
+    const day = Math.floor(Date.now() / 86400000);
+    setFact(dailyFacts[day % dailyFacts.length]);
   }, []);
 
-  useEffect(() => {
-    if (loaded) localStorage.setItem(key, JSON.stringify(checked));
-  }, [checked, loaded]);
-
-  useEffect(() => {
-    if (loaded) localStorage.setItem(booksKey, JSON.stringify(books));
-  }, [books, loaded]);
-
-  const total = Object.values(checked).filter(Boolean).length;
-  const possible = days.length * habits.length;
-  const percent = Math.round((total / possible) * 100);
-  const todayDone = habits.filter((_, h) => checked[`1-${h}`]).length;
-
-  const habitTotals = useMemo(
-    () => habits.map((_, h) => days.filter((day) => checked[`${day}-${h}`]).length),
-    [checked],
-  );
-
-  function toggle(day: number, habit: number) {
-    const id = `${day}-${habit}`;
-    const next = !checked[id];
-    setChecked((current) => ({ ...current, [id]: next }));
-    if (next) {
-      setBurst(id);
-      window.setTimeout(() => setBurst(""), 650);
-    }
+  function ask(event: FormEvent) {
+    event.preventDefault();
+    const q = question.toLowerCase().trim();
+    if (!q) return;
+    const found = answers.find((item) => item.keys.some((key) => q.includes(key)));
+    setAnswer(found?.answer ?? "Короткий ответ: российское дворянство было очень неоднородным — от богатейших титулованных фамилий до небогатых служилых дворян. Сформулируйте вопрос чуть конкретнее: например, спросите о титулах, балах, усадьбах, службе, образовании или 1917 годе.");
   }
 
   return (
     <main>
-      <header className="hero">
-        <div className="eyebrow"><span /> МОЙ РИТМ · АВГУСТ 2026</div>
-        <div className="heroRow">
-          <div>
-            <h1>Маленькие шаги.<br /><em>Большой результат.</em></h1>
-            <p>Отмечай выполненное каждый день. Всё сохраняется автоматически.</p>
-          </div>
-          <div className="ring" style={{ "--p": `${percent * 3.6}deg` } as React.CSSProperties}>
-            <div><strong>{percent}%</strong><span>за месяц</span></div>
-          </div>
-        </div>
-        <div className="stats">
-          <div><span>Выполнено</span><strong>{total}<small> / {possible}</small></strong></div>
-          <div><span>Сегодня</span><strong>{todayDone}<small> / 5</small></strong></div>
-          <div><span>Серия</span><strong>{total ? "1" : "0"}<small> день</small></strong></div>
-          <div className="quote">Не стремись к идеалу.<br /><b>Просто не останавливайся.</b></div>
-        </div>
+      <nav className="nav"><a className="brand" href="#top"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#history">История</a><a href="#life">Быт и нравы</a><a href="#gallery">Галерея</a><a href="#ask">Задать вопрос</a></div></nav>
+
+      <header id="top" className="hero">
+        <div className="heroImage" aria-hidden="true" />
+        <div className="heroCopy"><p className="overline">Энциклопедия русской жизни · XVII–XX вв.</p><h1>Честь. Служба.<br/><i>Наследие.</i></h1><p className="lead">История российского дворянства — без мифов, но с вниманием к людям, обычаям и культуре старой усадьбы.</p><a className="sealButton" href="#history">Открыть летопись <span>→</span></a></div>
+        <aside className="daily"><span>Факт дня</span><p>{fact}</p><small>Меняется каждый день</small></aside>
       </header>
 
-      <section className="content">
-        <div className="sectionHead">
-          <div><span className="sectionNum">01</span><h2>Трекер привычек</h2></div>
-          <div className="legend"><i /> выполнено <span /> контрольный день</div>
-        </div>
+      <section className="intro"><p className="flourish">✦</p><blockquote>«Дворянское достоинство есть следствие, истекающее от качества и добродетели начальствовавших в древности мужей»</blockquote><p>Жалованная грамота дворянству, 1785</p></section>
 
-        <div className="tableWrap">
-          <table>
-            <thead>
-              <tr>
-                <th className="dateCell">ДАТА</th>
-                {habits.map((habit, i) => (
-                  <th key={habit.name}>
-                    <span className="habitIcon" style={{ background: habit.color }}>{habit.icon}</span>
-                    <span>{habit.name}</span>
-                    <small>{habitTotals[i]} / 31</small>
-                  </th>
-                ))}
-                <th>ДЕНЬ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {days.map((day) => {
-                const milestone = [10, 20, 30].includes(day);
-                const done = habits.filter((_, h) => checked[`${day}-${h}`]).length;
-                return (
-                  <tr key={day} className={milestone ? "milestone" : ""}>
-                    <td className="dateCell"><strong>{String(day).padStart(2, "0")}</strong><span>{weekday[day - 1]}</span></td>
-                    {habits.map((habit, h) => {
-                      const id = `${day}-${h}`;
-                      return (
-                        <td key={id}>
-                          <button
-                            className={`check ${checked[id] ? "active" : ""} ${burst === id ? "burst" : ""}`}
-                            onClick={() => toggle(day, h)}
-                            aria-label={`${habit.name}, ${day} августа`}
-                            aria-pressed={Boolean(checked[id])}
-                            style={{ "--accent": habit.color } as React.CSSProperties}
-                          >
-                            <span>✓</span>
-                            {burst === id && <b className="sparkles">✦ <i>•</i> ✦</b>}
-                          </button>
-                        </td>
-                      );
-                    })}
-                    <td><span className="daily">{done}/5</span></td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <p className="footnote">Контрольные точки: 10, 20 и 30 августа · Продолжай в своём темпе</p>
+      <section id="history" className="section parchment"><div className="sectionTitle"><span>Глава первая</span><h2>Четыре поворотные даты</h2><p>От обязательной службы до заката сословного мира</p></div><div className="timeline">{topics.map((topic) => <article key={topic.year}><div className="year">{topic.year}</div><h3>{topic.title}</h3><p>{topic.text}</p></article>)}</div></section>
 
-        <section className="books">
-          <div className="sectionHead bookHead">
-            <div><span className="sectionNum">02</span><h2>Мои книги</h2></div>
-            <button className="addBook" onClick={() => setBooks((current) => [...current, ""])}>
-              <span>＋</span> Добавить книгу
-            </button>
-          </div>
-          <div className="bookGrid">
-            {books.map((book, index) => (
-              <article className="bookCard" key={index}>
-                <div className="bookNumber">{String(index + 1).padStart(2, "0")}</div>
-                <div className="bookMark">◒</div>
-                <label htmlFor={`book-${index}`}>Название книги</label>
-                <input
-                  id={`book-${index}`}
-                  value={book}
-                  onChange={(event) =>
-                    setBooks((current) =>
-                      current.map((title, bookIndex) => bookIndex === index ? event.target.value : title),
-                    )
-                  }
-                  placeholder="Например, «Маленький принц»"
-                  maxLength={120}
-                />
-                <span className="savedHint">{book.trim() ? "Сохранено автоматически" : "Впиши свою книгу"}</span>
-                {books.length > 1 && (
-                  <button
-                    className="removeBook"
-                    onClick={() => setBooks((current) => current.filter((_, bookIndex) => bookIndex !== index))}
-                    aria-label={`Удалить книгу ${index + 1}`}
-                  >
-                    Удалить
-                  </button>
-                )}
-              </article>
-            ))}
-          </div>
-        </section>
-      </section>
+      <section id="life" className="section dark"><div className="sectionTitle light"><span>Глава вторая</span><h2>Мир дворянской усадьбы</h2><p>Повседневность была сложнее парадного портрета</p></div><div className="lifeGrid"><article><b>01</b><h3>Воспитание</h3><p>Домашние наставники, французский и немецкий языки, музыка, танцы и история готовили ребёнка к свету и службе.</p></article><article><b>02</b><h3>Служба</h3><p>Армия, гвардия, дипломатия и гражданские ведомства оставались важнейшими путями карьеры и общественного признания.</p></article><article><b>03</b><h3>Усадьба</h3><p>Дом, парк, библиотека и хозяйство создавали особый уклад — красивый, но основанный на труде множества зависимых людей.</p></article><article><b>04</b><h3>Свет</h3><p>Балы, салоны, театры и визиты подчинялись этикету. Репутация семьи могла значить не меньше состояния.</p></article><article><b>05</b><h3>Деньги</h3><p>Не каждый дворянин был богат. Долги, заклады имений и служебное жалованье были привычной частью жизни многих семей.</p></article><article><b>06</b><h3>Род и память</h3><p>Родословные книги, портретные галереи, гербы и семейные архивы соединяли личную историю с историей государства.</p></article></div></section>
+
+      <section id="gallery" className="section gallery"><div className="sectionTitle"><span>Картинная галерея</span><h2>Лица и интерьеры эпохи</h2><p>Произведения из открытых собраний Wikimedia Commons</p></div><div className="galleryGrid">{gallery.map((item, index) => <figure key={item.title} className={index === 0 ? "tall" : ""}><img src={item.src} alt={item.title}/><figcaption><b>{item.title}</b><span>{item.note}</span></figcaption></figure>)}</div></section>
+
+      <section id="ask" className="ask"><div><span className="quill">?</span><p className="overline">Кабинет историка</p><h2>Спросите о дворянстве</h2><p>Например: «Как становились дворянами?», «Зачем устраивали балы?» или «Что произошло после 1917 года?»</p></div><form onSubmit={ask}><label htmlFor="question">Ваш вопрос</label><div className="inputRow"><input id="question" value={question} onChange={(e)=>setQuestion(e.target.value)} placeholder="Что вы хотите узнать?"/><button type="submit">Получить ответ</button></div>{answer && <div className="answer" aria-live="polite"><b>Ответ летописца</b><p>{answer}</p></div>}</form></section>
+
+      <section className="myths section"><div className="sectionTitle"><span>Без романтизации</span><h2>Три важных уточнения</h2></div><div><article><span>Миф</span><h3>Все дворяне были богаты</h3><p>На деле существовало множество мелкопоместных и вовсе безземельных дворян, живших службой.</p></article><article><span>Миф</span><h3>Каждый имел титул</h3><p>Князья, графы и бароны составляли лишь небольшую часть дворянского сословия.</p></article><article><span>Контекст</span><h3>Усадьба имела цену</h3><p>Её культура создавалась в обществе крепостного права и социального неравенства — это нельзя отделить от красоты эпохи.</p></article></div></section>
+
+      <footer><div className="brand"><span>Д</span><b>Дворянская<br/>летопись</b></div><p>Просветительский проект об истории российского дворянства</p><a href="#top">Наверх ↑</a></footer>
     </main>
   );
 }
