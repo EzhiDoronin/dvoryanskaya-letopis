@@ -75,7 +75,7 @@ export default function Home() {
 
   return (
     <main>
-      <nav className="nav"><a className="brand" href="#top"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#history">История</a><a href="#life">Быт и нравы</a><a href="#gallery">Галерея</a><a href="#ask">Задать вопрос</a></div></nav>
+      <nav className="nav"><a className="brand" href="#top"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#history">История</a><a href="#life">Быт и нравы</a><a href="#gallery">Галерея</a><a href="/ustav">Устав жизни</a><a href="#ask">Задать вопрос</a></div></nav>
 
       <header id="top" className="hero">
         <div className="heroImage" aria-hidden="true" />
