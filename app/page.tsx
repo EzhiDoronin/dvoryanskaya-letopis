@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 
+const publicBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const dailyFacts = [
   "В 1785 году Жалованная грамота дворянству закрепила право дворян создавать губернские и уездные общества.",
   "Дворянский титул и дворянское достоинство — не одно и то же: большинство российских дворян не имело титула князя, графа или барона.",
@@ -44,7 +46,7 @@ const gallery = [
   { src: "/history/ball.jpg", title: "Придворный церемониал", note: "Зимний дворец, 1896", text: "Бал служил местом знакомств, переговоров и демонстрации положения при дворе. За внешней лёгкостью танца стояли годы обучения и строгая социальная иерархия.", position: "70% center" },
   { src: "/history/tolstoy.jpg", title: "Дворянин и литература", note: "Русская усадебная культура", text: "Дворянская среда дала России многих писателей, издателей и читателей. Домашние библиотеки и литературные салоны были важной частью культурной жизни XIX века.", position: "30% center" },
   { src: "/history/winter-palace.jpg", title: "Императорская столица", note: "Архитектура XVIII века", text: "Петербургские дворцы задавали образец вкуса для знати. Их архитектура, интерьеры и коллекции влияли на устройство городских домов и загородных усадеб.", position: "center 35%" },
-];
+].map(item => ({ ...item, src: `${publicBase}${item.src}` }));
 
 export default function Home() {
   const [fact, setFact] = useState(dailyFacts[0]);
@@ -75,10 +77,10 @@ export default function Home() {
 
   return (
     <main>
-      <nav className="nav"><a className="brand" href="#top"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#history">История</a><a href="#life">Быт и нравы</a><a href="#gallery">Галерея</a><a href="/ustav">Устав жизни</a><a href="#ask">Задать вопрос</a></div></nav>
+      <nav className="nav"><a className="brand" href="#top"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#history">История</a><a href="#life">Быт и нравы</a><a href="#gallery">Галерея</a><a href={`${publicBase}/ustav/`}>Устав жизни</a><a href="#ask">Задать вопрос</a></div></nav>
 
       <header id="top" className="hero">
-        <div className="heroImage" aria-hidden="true" />
+        <div className="heroImage" aria-hidden="true" style={{backgroundImage:`linear-gradient(90deg,rgba(16,33,27,.98) 0%,rgba(16,33,27,.84) 42%,rgba(16,33,27,.18) 75%),url('${publicBase}/history/ball.jpg')`}} />
         <div className="heroCopy"><p className="overline">Энциклопедия русской жизни · XVII–XX вв.</p><h1>Честь. Служба.<br/><i>Наследие.</i></h1><p className="lead">История российского дворянства — без мифов, но с вниманием к людям, обычаям и культуре старой усадьбы.</p><a className="sealButton" href="#history">Открыть летопись <span>→</span></a></div>
         <aside className="daily"><span>Факт дня</span><p>{fact}</p><small>Меняется каждый день</small></aside>
       </header>

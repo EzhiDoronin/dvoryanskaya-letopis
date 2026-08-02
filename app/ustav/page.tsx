@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+const publicBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const principles = [
   ["Держать слово", "Не обещать сгоряча. Если обещал — выполнить или заранее честно объяснить, почему не можешь."],
   ["Отвечать за последствия", "Не прятаться за должность, происхождение или обстоятельства. Признавать свою долю ответственности."],
@@ -39,7 +41,7 @@ export default function UstavPage() {
   function toggle(index:number){ setDone(current => { const next=current.includes(index)?current.filter(i=>i!==index):[...current,index]; localStorage.setItem("ustav-week",JSON.stringify(next)); return next; }); }
 
   return <main className="ustavPage">
-    <nav className="nav ustavNav"><a className="brand" href="/"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="/">Энциклопедия</a><a href="#principles">Принципы</a><a href="#manners">Манеры</a><a href="#education">Образование</a><a href="#practice">Практика</a></div></nav>
+    <nav className="nav ustavNav"><a className="brand" href={`${publicBase}/`}><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href={`${publicBase}/`}>Энциклопедия</a><a href="#principles">Принципы</a><a href="#manners">Манеры</a><a href="#education">Образование</a><a href="#practice">Практика</a></div></nav>
 
     <header className="ustavHero"><div><p className="overline">Практическое руководство · XXI век</p><h1>Устав<br/><i>достойной жизни</i></h1><p>Не о привилегиях происхождения, а о воспитании характера: честь, самообладание, образованность и уважение к другим.</p><a href="#principles">Начать с принципов ↓</a></div><aside><b>Главная мысль</b><blockquote>Благородство сегодня — не титул, а привычка отвечать за себя и беречь достоинство другого.</blockquote></aside></header>
 
@@ -61,7 +63,7 @@ export default function UstavPage() {
 
     <section id="practice" className="ustavSection practiceSection"><header><span>IV · Практика</span><h2>Неделя благородных привычек</h2><p>Отметки сохраняются на вашем устройстве. Начните не с образа, а с маленьких поступков.</p></header><div className="practiceList">{weekly.map((item,index)=><button type="button" className={done.includes(index)?"done":""} onClick={()=>toggle(index)} key={item}><span>{done.includes(index)?"✓":"○"}</span><p><b>День {index+1}</b>{item}</p></button>)}</div><p className="progressLine">Выполнено: <b>{done.length} из {weekly.length}</b></p></section>
 
-    <section className="closingCode"><span>Короткий кодекс</span><blockquote>Говори правду. Держи слово. Владей собой. Учись всю жизнь. Будь внимателен к слабому. Не путай достоинство с гордостью. Оставляй после себя порядок.</blockquote><a href="/">← Вернуться в энциклопедию</a></section>
+    <section className="closingCode"><span>Короткий кодекс</span><blockquote>Говори правду. Держи слово. Владей собой. Учись всю жизнь. Будь внимателен к слабому. Не путай достоинство с гордостью. Оставляй после себя порядок.</blockquote><a href={`${publicBase}/`}>← Вернуться в энциклопедию</a></section>
     <footer><div className="brand"><span>Д</span><b>Дворянская<br/>летопись</b></div><p>Благородство определяется поступком, а не происхождением</p><a href="#top">Наверх ↑</a></footer>
   </main>;
 }
