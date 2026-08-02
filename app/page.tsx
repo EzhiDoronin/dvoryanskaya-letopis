@@ -77,7 +77,8 @@ export default function Home() {
 
   return (
     <main>
-      <nav className="nav"><a className="brand" href="#top"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#history">История</a><a href="#life">Быт и нравы</a><a href="#gallery">Галерея</a><a href={`${publicBase}/ustav/`}>Устав жизни</a><a href="#ask">Задать вопрос</a></div></nav>
+      <nav className="nav"><a className="brand" href="#top"><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#history">История</a><a href="#life">Быт и нравы</a><a href="#gallery">Галерея</a><a href="#ask">Задать вопрос</a></div></nav>
+      <div className="siteTabs" aria-label="Главные разделы сайта"><a className="active" href={`${publicBase}/`} aria-current="page"><small>I</small>История дворянства</a><a href={`${publicBase}/ustav/`}><small>II</small>Устав достойной жизни</a></div>
 
       <header id="top" className="hero">
         <div className="heroImage" aria-hidden="true" style={{backgroundImage:`linear-gradient(90deg,rgba(16,33,27,.98) 0%,rgba(16,33,27,.84) 42%,rgba(16,33,27,.18) 75%),url('${publicBase}/history/ball.jpg')`}} />

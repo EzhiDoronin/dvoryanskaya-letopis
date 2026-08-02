@@ -41,7 +41,8 @@ export default function UstavPage() {
   function toggle(index:number){ setDone(current => { const next=current.includes(index)?current.filter(i=>i!==index):[...current,index]; localStorage.setItem("ustav-week",JSON.stringify(next)); return next; }); }
 
   return <main className="ustavPage">
-    <nav className="nav ustavNav"><a className="brand" href={`${publicBase}/`}><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href={`${publicBase}/`}>Энциклопедия</a><a href="#principles">Принципы</a><a href="#manners">Манеры</a><a href="#education">Образование</a><a href="#practice">Практика</a></div></nav>
+    <nav className="nav ustavNav"><a className="brand" href={`${publicBase}/`}><span>Д</span><b>Дворянская<br/>летопись</b></a><div><a href="#principles">Принципы</a><a href="#manners">Манеры</a><a href="#education">Образование</a><a href="#practice">Практика</a></div></nav>
+    <div className="siteTabs" aria-label="Главные разделы сайта"><a href={`${publicBase}/`}><small>I</small>История дворянства</a><a className="active" href={`${publicBase}/ustav/`} aria-current="page"><small>II</small>Устав достойной жизни</a></div>
 
     <header className="ustavHero"><div><p className="overline">Практическое руководство · XXI век</p><h1>Устав<br/><i>достойной жизни</i></h1><p>Не о привилегиях происхождения, а о воспитании характера: честь, самообладание, образованность и уважение к другим.</p><a href="#principles">Начать с принципов ↓</a></div><aside><b>Главная мысль</b><blockquote>Благородство сегодня — не титул, а привычка отвечать за себя и беречь достоинство другого.</blockquote></aside></header>
 
