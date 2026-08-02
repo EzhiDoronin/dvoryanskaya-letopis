@@ -1,2 +1,2 @@
-:HL["/dvoryanskaya-letopis/_next/static/chunks/08bc7gjwri9yg.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"-d16PYqHnFtyrtLegWbZd"}
+:HL["/dvoryanskaya-letopis/_next/static/chunks/0-2elxpfoy4is.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"zf3MTjwkzE1dz4pbkhvHk"}
