@@ -1,0 +1,239 @@
+@media (max-width: 800px) {
+  html { scroll-padding-top: 58px; }
+  body { overflow-x: hidden; }
+  img { max-width: 100%; }
+
+  .nav {
+    height: 72px;
+    padding: 0 18px;
+  }
+
+  .brand { gap: 10px; letter-spacing: .1em; }
+  .brand span { width: 38px; height: 38px; font-size: 22px; }
+
+  .siteTabs {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 8px 24px rgba(45, 31, 18, .08);
+  }
+
+  .siteTabs a {
+    min-height: 52px;
+    padding: 9px 7px;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  .hero {
+    min-height: auto;
+    display: block;
+    padding: 0 0 28px;
+  }
+
+  .heroImage {
+    background-image:
+      linear-gradient(180deg, rgba(16, 33, 27, .94) 0%, rgba(16, 33, 27, .76) 56%, rgba(16, 33, 27, .95) 100%),
+      url('https://ezhidoronin.github.io/dvoryanskaya-letopis/history/ball.jpg') !important;
+    background-position: 44% center !important;
+  }
+
+  .heroCopy {
+    width: 100%;
+    margin: 0;
+    padding: 58px 22px 30px;
+  }
+
+  .overline,
+  .sectionTitle span { font-size: 9px; line-height: 1.6; }
+
+  .hero h1 {
+    max-width: 335px;
+    margin: 24px 0 22px;
+    font-size: clamp(50px, 15.5vw, 62px);
+    line-height: .84;
+    letter-spacing: -.045em;
+  }
+
+  .lead {
+    max-width: 330px;
+    font-size: 18px;
+    line-height: 1.48;
+  }
+
+  .sealButton {
+    width: 100%;
+    min-height: 52px;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding: 14px 17px;
+  }
+
+  .daily {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin: 0 18px;
+    padding: 21px 22px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .28);
+  }
+
+  .daily p { font-size: 17px; }
+
+  .intro { padding: 50px 20px; }
+  blockquote { font-size: 28px; line-height: 1.18; }
+
+  .section { padding: 66px 20px; }
+  .sectionTitle { margin-bottom: 36px; }
+  .sectionTitle h2,
+  .ask h2 { font-size: clamp(38px, 11.5vw, 48px); }
+  .sectionTitle p { font-size: 12px; line-height: 1.55; }
+
+  .timeline article { padding: 28px 12px 28px 26px; }
+  .timeline article::before { left: 26px; }
+  .year { font-size: 42px; }
+
+  .lifeGrid article { padding: 28px 24px; }
+  .lifeGrid h3 { font-size: 27px; }
+
+  .galleryGrid {
+    display: flex;
+    gap: 12px;
+    width: calc(100vw - 40px);
+    max-width: none;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: thin;
+    padding: 0 10vw 14px 0;
+  }
+
+  .galleryGrid .galleryCard,
+  .galleryGrid .tall,
+  .galleryGrid figure:last-child {
+    flex: 0 0 min(82vw, 320px);
+    height: 410px;
+    grid-column: auto;
+    grid-row: auto;
+    scroll-snap-align: start;
+  }
+
+  .galleryCaption { padding: 78px 18px 18px; }
+  .galleryCaption b { font-size: 20px; }
+  .galleryCaption i { opacity: 1; transform: none; }
+
+  .ask {
+    padding: 66px 20px;
+    gap: 28px;
+  }
+
+  .quill { width: 50px; height: 50px; }
+  .inputRow input { width: 100%; min-height: 54px; padding: 16px; }
+  .inputRow button { min-height: 52px; }
+  .suggestions { gap: 9px; }
+  .suggestions button { min-height: 44px; padding: 9px 13px; font-size: 10px; }
+  .answer { padding: 18px; }
+
+  .myths article { padding: 25px 22px; }
+
+  footer { min-height: auto; padding: 42px 20px; }
+
+  .imageModal {
+    align-items: end;
+    padding: 0;
+  }
+
+  .modalCard {
+    width: 100%;
+    max-height: 94dvh;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .modalPicture {
+    height: 34vh;
+    min-height: 250px;
+    max-height: 330px;
+  }
+
+  .modalText { padding: 25px 20px 30px; }
+  .modalText h2 { margin: 12px 0; font-size: 35px; }
+  .modalText p { margin: 18px 0; font-size: 16px; }
+  .modalClose { width: 44px; height: 44px; top: 10px; right: 10px; }
+
+  .ustavHero {
+    display: block;
+    min-height: auto;
+    padding: 58px 20px 30px;
+    background:
+      linear-gradient(180deg, rgba(20, 46, 39, .94), rgba(20, 46, 39, .82)),
+      url('https://ezhidoronin.github.io/dvoryanskaya-letopis/history/winter-palace.jpg') center / cover;
+  }
+
+  .ustavHero h1 {
+    margin: 26px 0 22px;
+    font-size: clamp(54px, 17vw, 72px);
+    line-height: .82;
+    letter-spacing: -.045em;
+  }
+
+  .ustavHero > div > p:not(.overline) { font-size: 18px; line-height: 1.48; }
+  .ustavHero > div > a { min-height: 44px; margin-top: 16px; }
+
+  .ustavHero aside {
+    margin-top: 30px;
+    padding: 25px 21px;
+  }
+
+  .ustavHero aside blockquote { font-size: 26px; }
+
+  .contextNote {
+    padding: 26px 20px;
+    gap: 12px;
+  }
+
+  .ustavSection { padding: 66px 20px; }
+  .ustavSection > header { margin-bottom: 38px; }
+  .ustavSection > header h2,
+  .honorTest h2,
+  .conflictScript h2,
+  .curriculum h2 { font-size: clamp(39px, 11vw, 48px); }
+
+  .principleGrid article { padding: 27px 22px; }
+  .principleGrid h3 { font-size: 28px; }
+
+  .honorTest,
+  .conflictScript,
+  .curriculum { padding: 66px 20px; gap: 34px; }
+
+  .honorTest ol { grid-template-columns: 1fr; }
+  .honorTest li { padding: 21px 17px; }
+
+  .mannersGrid summary { min-height: 64px; padding: 18px 16px; }
+  .mannersGrid summary h3 { font-size: 21px; line-height: 1.1; }
+  .mannersGrid ul { padding: 0 22px 22px 42px; }
+
+  .conflictScript > div { padding-left: 20px; }
+  .conflictScript p { font-size: 18px; }
+
+  .educationTable article h3,
+  .educationTable article p { padding: 17px 18px; }
+  .educationTable article h3 { font-size: 23px; }
+
+  .genderNote { padding: 22px 18px; }
+  .curriculum ol { grid-template-columns: 1fr; }
+  .curriculum li { min-height: 58px; padding: 17px; }
+
+  .practiceList button { min-height: 66px; padding: 16px; }
+  .closingCode { padding: 68px 20px; }
+}
+
+@media (max-width: 380px) {
+  .heroCopy { padding-inline: 18px; }
+  .hero h1 { font-size: 49px; }
+  .daily { margin-inline: 14px; }
+  .siteTabs a { font-size: 12px; }
+  .galleryGrid { width: calc(100vw - 36px); }
+  .galleryGrid .galleryCard,
+  .galleryGrid .tall,
+  .galleryGrid figure:last-child { flex-basis: 84vw; height: 390px; }
+}
